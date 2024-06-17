@@ -120,3 +120,11 @@ func (wsConn *WSConn) SetReadDeadline(t time.Time) error {
 func (wsConn *WSConn) SetWriteDeadline(t time.Time) error {
 	return wsConn.conn.SetWriteDeadline(t)
 }
+
+func (wsConn *WSConn) MessageReceive(v interface{}) error {
+	return websocket.Message.Receive(wsConn.conn, v)
+}
+
+func (wsConn *WSConn) MessageSend(v interface{}) error {
+	return websocket.Message.Send(wsConn.conn, v)
+}
