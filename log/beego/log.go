@@ -24,13 +24,13 @@
 //
 // Use it like this:
 //
-//	log.Trace("trace")
-//	log.Info("info")
-//	log.Warn("warning")
-//	log.Debug("debug")
-//	log.Critical("critical")
+//		log.Trace("trace")
+//		log.Info("info")
+//		log.Warn("warning")
+//		log.Debug("debug")
+//		log.Critical("critical")
 //
-//  more docs http://beego.me/docs/module/logs.md
+//	 more docs http://beego.me/docs/module/logs.md
 package logs
 
 import (
@@ -578,9 +578,9 @@ func GetCallStack(skip int, frames int, filter string) (CallStack, sf string) {
 func moduleOf(file string) string {
 	pos := strings.LastIndex(file, "/")
 	if pos != -1 {
-		pos1 := strings.LastIndex(file[:pos], "/src/")
+		pos1 := strings.LastIndex(file[:pos], "/")
 		if pos1 != -1 {
-			return file[pos1+5 : pos]
+			return file[pos1+1 : pos]
 		}
 	}
 	return "UNKNOWN"
@@ -879,7 +879,6 @@ func SetLogger(adapter string, config ...string) error {
 	return beeLogger.SetLogger(adapter, config...)
 }
 
-//
 // Emergency logs a message at emergency level.
 func Emergency(f interface{}, v ...interface{}) {
 	beeLogger.Emergency(nil, formatLog(f, v...))
