@@ -58,7 +58,7 @@ func (p *protocolMarshalImp) GetData() []byte {
 }
 
 func newOptions(opts ...module.Option) module.Options {
-	var wdPath, confPath, Logdir, BIdir *string
+	var wdPath, Logdir, BIdir *string
 	var ProcessID *string
 	opt := module.Options{
 		Registry:         registry.DefaultRegistry,
@@ -84,7 +84,6 @@ func newOptions(opts ...module.Option) module.Options {
 
 	if opt.Parse {
 		wdPath = flag.String("wd", "", "Server work directory")
-		confPath = flag.String("conf", "", "Server configuration file path")
 		ProcessID = flag.String("pid", "development", "Server ProcessID?")
 		Logdir = flag.String("log", "", "Log file directory?")
 		BIdir = flag.String("bi", "", "bi file directory?")
@@ -128,17 +127,8 @@ func newOptions(opts ...module.Option) module.Options {
 
 	}
 	opt.WorkDir = ApplicationDir
-	defaultConfPath := fmt.Sprintf("%s/bin/conf/server.json", ApplicationDir)
 	defaultLogPath := fmt.Sprintf("%s/bin/logs", ApplicationDir)
 	defaultBIPath := fmt.Sprintf("%s/bin/bi", ApplicationDir)
-
-	if opt.ConfPath == "" {
-		if *confPath == "" {
-			opt.ConfPath = defaultConfPath
-		} else {
-			opt.ConfPath = *confPath
-		}
-	}
 
 	if opt.LogDir == "" {
 		if *Logdir == "" {
@@ -156,9 +146,6 @@ func newOptions(opts ...module.Option) module.Options {
 		}
 	}
 
-	if _, err := os.Stat(opt.ConfPath); os.IsNotExist(err) {
-		panic(fmt.Sprintf("config path error %v", err))
-	}
 	if _, err := os.Stat(opt.LogDir); os.IsNotExist(err) {
 		if err := os.Mkdir(opt.LogDir, os.ModePerm); err != nil {
 			fmt.Println(err)
@@ -202,8 +189,7 @@ type DefaultApp struct {
 // Run 运行应用
 func (app *DefaultApp) Run(mods ...module.Module) error {
 	var cof conf.Config
-	fmt.Println("Server configuration path :", app.opts.ConfPath)
-	conf.LoadConfig(app.opts.ConfPath) //加载配置文件
+	conf.LoadConfig(app.opts.Config) //加载配置文件
 	cof = conf.Conf
 	app.Configure(cof) //解析配置信息
 

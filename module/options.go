@@ -1,6 +1,7 @@
 package module
 
 import (
+	"github.com/liangdas/mqant/conf"
 	"time"
 
 	"github.com/liangdas/mqant/registry"
@@ -20,10 +21,10 @@ type Options struct {
 	Debug       bool
 	Parse       bool //是否由框架解析启动环境变量,默认为true
 	WorkDir     string
-	ConfPath    string
 	LogDir      string
 	BIDir       string
 	ProcessID   string
+	Config      *conf.Config
 	KillWaitTTL time.Duration
 	Registry    registry.Registry
 	Selector    selector.Selector
@@ -71,13 +72,6 @@ func Debug(t bool) Option {
 func WorkDir(v string) Option {
 	return func(o *Options) {
 		o.WorkDir = v
-	}
-}
-
-// Configure 配置路径
-func Configure(v string) Option {
-	return func(o *Options) {
-		o.ConfPath = v
 	}
 }
 
@@ -174,14 +168,14 @@ func Parse(t bool) Option {
 	}
 }
 
-//RPC超时时间
+// RPC超时时间
 func RPCExpired(t time.Duration) Option {
 	return func(o *Options) {
 		o.RPCExpired = t
 	}
 }
 
-//单个节点RPC同时并发协程数
+// 单个节点RPC同时并发协程数
 func RPCMaxCoroutine(t int) Option {
 	return func(o *Options) {
 		o.RPCMaxCoroutine = t
@@ -199,5 +193,11 @@ func WithLogFile(name FileNameHandler) Option {
 func WithBIFile(name FileNameHandler) Option {
 	return func(o *Options) {
 		o.BIFileName = name
+	}
+}
+
+func Config(cfg *conf.Config) Option {
+	return func(o *Options) {
+		o.Config = cfg
 	}
 }

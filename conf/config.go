@@ -31,11 +31,9 @@ var (
 )
 
 // LoadConfig 加载配置
-func LoadConfig(Path string) {
-	// Read config.
-	if err := readFileInto(Path); err != nil {
-		panic(err)
-	}
+func LoadConfig(cfg *Config) {
+	Conf = *cfg
+
 	if Conf.RPC.RPCExpired == 0 {
 		Conf.RPC.RPCExpired = 3
 	}
