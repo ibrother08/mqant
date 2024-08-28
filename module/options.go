@@ -41,6 +41,8 @@ type Options struct {
 	LogFileName FileNameHandler
 	// 自定义BI日志名字
 	BIFileName FileNameHandler
+
+	AppPrintAtStart func()
 }
 
 type FileNameHandler func(logdir, prefix, processID, suffix string) string
@@ -199,5 +201,11 @@ func WithBIFile(name FileNameHandler) Option {
 func Config(cfg *conf.Config) Option {
 	return func(o *Options) {
 		o.Config = cfg
+	}
+}
+
+func AppPrintAtStart(f func()) Option {
+	return func(o *Options) {
+		o.AppPrintAtStart = f
 	}
 }

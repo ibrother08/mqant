@@ -1,3 +1,3 @@
 package mqant
 
-const version = "1.5.4"
+const version = "1.5.5"

@@ -210,6 +210,11 @@ func (app *DefaultApp) Run(mods ...module.Module) error {
 		log.WithBiSetting(cof.BI),
 		log.WithBIFileName(app.opts.BIFileName),
 		log.WithLogSetting(cof.Log))
+
+	if app.opts.AppPrintAtStart != nil {
+		app.opts.AppPrintAtStart()
+	}
+
 	log.Info("mqant %v starting up", app.opts.Version)
 
 	manager := basemodule.NewModuleManager()
