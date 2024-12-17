@@ -54,7 +54,7 @@ func (mer *ModuleManager) RegisterRunMod(mi module.Module) {
 }
 
 // Init 初始化
-func (mer *ModuleManager) Init(app module.App, ProcessID string) {
+func (mer *ModuleManager) Init(app module.App, ProcessID string) error {
 	log.Info("This service ModuleGroup(ProcessID) is [%s]", ProcessID)
 	mer.app = app
 	mer.CheckModuleSettings() //配置文件规则检查
@@ -76,7 +76,9 @@ func (mer *ModuleManager) Init(app module.App, ProcessID string) {
 
 	for i := 0; i < len(mer.runMods); i++ {
 		m := mer.runMods[i]
-		m.mi.OnInit(app, m.settings)
+		if err := m.mi.OnInit(app, m.settings); err != nil {
+			return err
+		}
 
 		if app.GetModuleInited() != nil {
 			app.GetModuleInited()(app, m.mi)
@@ -86,6 +88,8 @@ func (mer *ModuleManager) Init(app module.App, ProcessID string) {
 		go run(m)
 	}
 	//timer.SetTimer(3, mer.ReportStatistics, nil) //统计汇报定时任务
+
+	return nil
 }
 
 // CheckModuleSettings module配置文件规则检查

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//Package module 模块定义
+// Package module 模块定义
 package module
 
 import (
@@ -47,7 +47,7 @@ type ServerSession interface {
 	CallNRArgs(_func string, ArgsType []string, args [][]byte) (err error)
 }
 
-//App mqant应用定义
+// App mqant应用定义
 type App interface {
 	UpdateOptions(opts ...Option) error
 	Run(mods ...Module) error
@@ -110,7 +110,7 @@ type Module interface {
 	GetType() string                             //模块类型
 	OnAppConfigurationLoaded(app App)            //当App初始化时调用，这个接口不管这个模块是否在这个进程运行都会调用
 	OnConfChanged(settings *conf.ModuleSettings) //为以后动态服务发现做准备
-	OnInit(app App, settings *conf.ModuleSettings)
+	OnInit(app App, settings *conf.ModuleSettings) error
 	OnDestroy()
 	GetApp() App
 	Run(closeSig chan bool)
@@ -154,7 +154,7 @@ type RPCModule interface {
 	GetExecuting() int64
 }
 
-//RPCSerialize 自定义参数序列化接口
+// RPCSerialize 自定义参数序列化接口
 type RPCSerialize interface {
 	/**
 	序列化 结构体-->[]byte

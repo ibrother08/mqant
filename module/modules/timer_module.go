@@ -1,4 +1,5 @@
-/**
+/*
+*
 一定要记得在confin.json配置这个模块的参数,否则无法使用
 */
 package modules
@@ -24,7 +25,7 @@ func (m *Timer) GetType() string {
 	return "Timer"
 }
 
-func (m *Timer) OnInit(app module.App, settings *conf.ModuleSettings) {
+func (m *Timer) OnInit(app module.App, settings *conf.ModuleSettings) error {
 	timewheel.SetTimeWheel(timewheel.New(10*time.Millisecond, 36))
 	// 时间轮使用方式
 	//import "github.com/liangdas/mqant/module/modules/timer"
@@ -34,6 +35,8 @@ func (m *Timer) OnInit(app module.App, settings *conf.ModuleSettings) {
 	//timewheel.GetTimeWheel().AddTimerCustom(66 * time.Millisecond ,"baba", nil,self.Update)
 	//删除一个为执行的定时器, 参数为添加定时器传递的唯一标识
 	//timewheel.GetTimeWheel().RemoveTimer("baba")
+
+	return nil
 }
 
 func (m *Timer) Run(closeSig chan bool) {

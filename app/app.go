@@ -224,8 +224,12 @@ func (app *DefaultApp) Run(mods ...module.Module) error {
 		mods[i].OnAppConfigurationLoaded(app)
 		manager.Register(mods[i])
 	}
-	app.OnInit(app.settings)
-	manager.Init(app, app.opts.ProcessID)
+	if err := app.OnInit(app.settings); err != nil {
+		return err
+	}
+	if err := manager.Init(app, app.opts.ProcessID); err != nil {
+		return err
+	}
 	if app.startup != nil {
 		app.startup(app)
 	}
